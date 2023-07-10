@@ -20,6 +20,10 @@ message tradeResult {
 
 service Order{
     rpc Request(requestStockName) returns (requestResult) {}
+    rpc Lookup(lookupOrderNum) returns (lookupOrderNumResult) {}
+    rpc Propagate(propagateOrderNum) returns (propagateResult) {}
+    rpc AssignFollowers (followersAssigned) returns (followersResult) {}
+    rpc Synchronize (synchronizeTransNum) returns (stream transNumInfo) {}
 }
 message requestStockName {
     optional string stockName = 1;
@@ -28,4 +32,39 @@ message requestStockName {
 }
 message requestResult {
     optional int32 transactionNum = 1;
+}
+message lookupOrderNum {
+    optional int32 orderNum = 1;
+}
+message lookupOrderNumResult {
+    optional int32 orderNum = 1;
+    optional string stockName = 2;
+    optional string tradeType = 3;
+    optional int32 stockTradeQuantity = 4;
+}
+message propagateOrderNum {
+    optional int32 orderNum = 1;
+    optional string stockName = 2;
+    optional string tradeType = 3;
+    optional int32 stockTradeQuantity = 4;
+}
+message propagateResult {
+    optional int32 resultPropagate = 1;
+}
+message followersAssigned {
+    optional string followerOne = 1;
+    optional string followerTwo = 2;
+}
+message followersResult {
+    optional int32 resultFollowers = 1;
+}
+message synchronizeTransNum {
+    optional int32 orderNum = 1;
+    optional string synchronizedAdd = 2;
+}
+message transNumInfo {
+    optional int32 orderNum = 1;
+    optional string stockName = 2;
+    optional string tradeType = 3;
+    optional int32 stockTradeQuantity = 4;
 }

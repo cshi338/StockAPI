@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11stockbazaar.proto\"$\n\x0flookupStockName\x12\x11\n\tstockName\x18\x01 \x01(\t\"9\n\x0clookupResult\x12\x12\n\nstockPrice\x18\x01 \x01(\x02\x12\x15\n\rstockQuantity\x18\x02 \x01(\x05\"R\n\x0etradeStockName\x12\x11\n\tstockName\x18\x01 \x01(\t\x12\x1a\n\x12stockTradeQuantity\x18\x02 \x01(\x05\x12\x11\n\ttradeType\x18\x03 \x01(\t\"\"\n\x0btradeResult\x12\x13\n\x0bresultTrade\x18\x01 \x01(\x05\"T\n\x10requestStockName\x12\x11\n\tstockName\x18\x01 \x01(\t\x12\x1a\n\x12stockTradeQuantity\x18\x02 \x01(\x05\x12\x11\n\ttradeType\x18\x03 \x01(\t\"\'\n\rrequestResult\x12\x16\n\x0etransactionNum\x18\x01 \x01(\x05\x32`\n\x07\x43\x61talog\x12+\n\x06Lookup\x12\x10.lookupStockName\x1a\r.lookupResult\"\x00\x12(\n\x05Trade\x12\x0f.tradeStockName\x1a\x0c.tradeResult\"\x00\x32\x37\n\x05Order\x12.\n\x07Request\x12\x11.requestStockName\x1a\x0e.requestResult\"\x00')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11stockbazaar.proto\"$\n\x0flookupStockName\x12\x11\n\tstockName\x18\x01 \x01(\t\"9\n\x0clookupResult\x12\x12\n\nstockPrice\x18\x01 \x01(\x02\x12\x15\n\rstockQuantity\x18\x02 \x01(\x05\"R\n\x0etradeStockName\x12\x11\n\tstockName\x18\x01 \x01(\t\x12\x1a\n\x12stockTradeQuantity\x18\x02 \x01(\x05\x12\x11\n\ttradeType\x18\x03 \x01(\t\"\"\n\x0btradeResult\x12\x13\n\x0bresultTrade\x18\x01 \x01(\x05\"T\n\x10requestStockName\x12\x11\n\tstockName\x18\x01 \x01(\t\x12\x1a\n\x12stockTradeQuantity\x18\x02 \x01(\x05\x12\x11\n\ttradeType\x18\x03 \x01(\t\"\'\n\rrequestResult\x12\x16\n\x0etransactionNum\x18\x01 \x01(\x05\"\"\n\x0elookupOrderNum\x12\x10\n\x08orderNum\x18\x01 \x01(\x05\"j\n\x14lookupOrderNumResult\x12\x10\n\x08orderNum\x18\x01 \x01(\x05\x12\x11\n\tstockName\x18\x02 \x01(\t\x12\x11\n\ttradeType\x18\x03 \x01(\t\x12\x1a\n\x12stockTradeQuantity\x18\x04 \x01(\x05\"g\n\x11propagateOrderNum\x12\x10\n\x08orderNum\x18\x01 \x01(\x05\x12\x11\n\tstockName\x18\x02 \x01(\t\x12\x11\n\ttradeType\x18\x03 \x01(\t\x12\x1a\n\x12stockTradeQuantity\x18\x04 \x01(\x05\"*\n\x0fpropagateResult\x12\x17\n\x0fresultPropagate\x18\x01 \x01(\x05\"=\n\x11\x66ollowersAssigned\x12\x13\n\x0b\x66ollowerOne\x18\x01 \x01(\t\x12\x13\n\x0b\x66ollowerTwo\x18\x02 \x01(\t\"*\n\x0f\x66ollowersResult\x12\x17\n\x0fresultFollowers\x18\x01 \x01(\x05\"@\n\x13synchronizeTransNum\x12\x10\n\x08orderNum\x18\x01 \x01(\x05\x12\x17\n\x0fsynchronizedAdd\x18\x02 \x01(\t\"b\n\x0ctransNumInfo\x12\x10\n\x08orderNum\x18\x01 \x01(\x05\x12\x11\n\tstockName\x18\x02 \x01(\t\x12\x11\n\ttradeType\x18\x03 \x01(\t\x12\x1a\n\x12stockTradeQuantity\x18\x04 \x01(\x05\x32`\n\x07\x43\x61talog\x12+\n\x06Lookup\x12\x10.lookupStockName\x1a\r.lookupResult\"\x00\x12(\n\x05Trade\x12\x0f.tradeStockName\x1a\x0c.tradeResult\"\x00\x32\x93\x02\n\x05Order\x12.\n\x07Request\x12\x11.requestStockName\x1a\x0e.requestResult\"\x00\x12\x32\n\x06Lookup\x12\x0f.lookupOrderNum\x1a\x15.lookupOrderNumResult\"\x00\x12\x33\n\tPropagate\x12\x12.propagateOrderNum\x1a\x10.propagateResult\"\x00\x12\x39\n\x0f\x41ssignFollowers\x12\x12.followersAssigned\x1a\x10.followersResult\"\x00\x12\x36\n\x0bSynchronize\x12\x14.synchronizeTransNum\x1a\r.transNumInfo\"\x00\x30\x01')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'stockbazaar_pb2', globals())
@@ -32,8 +32,24 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _REQUESTSTOCKNAME._serialized_end=322
   _REQUESTRESULT._serialized_start=324
   _REQUESTRESULT._serialized_end=363
-  _CATALOG._serialized_start=365
-  _CATALOG._serialized_end=461
-  _ORDER._serialized_start=463
-  _ORDER._serialized_end=518
+  _LOOKUPORDERNUM._serialized_start=365
+  _LOOKUPORDERNUM._serialized_end=399
+  _LOOKUPORDERNUMRESULT._serialized_start=401
+  _LOOKUPORDERNUMRESULT._serialized_end=507
+  _PROPAGATEORDERNUM._serialized_start=509
+  _PROPAGATEORDERNUM._serialized_end=612
+  _PROPAGATERESULT._serialized_start=614
+  _PROPAGATERESULT._serialized_end=656
+  _FOLLOWERSASSIGNED._serialized_start=658
+  _FOLLOWERSASSIGNED._serialized_end=719
+  _FOLLOWERSRESULT._serialized_start=721
+  _FOLLOWERSRESULT._serialized_end=763
+  _SYNCHRONIZETRANSNUM._serialized_start=765
+  _SYNCHRONIZETRANSNUM._serialized_end=829
+  _TRANSNUMINFO._serialized_start=831
+  _TRANSNUMINFO._serialized_end=929
+  _CATALOG._serialized_start=931
+  _CATALOG._serialized_end=1027
+  _ORDER._serialized_start=1030
+  _ORDER._serialized_end=1305
 # @@protoc_insertion_point(module_scope)

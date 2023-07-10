@@ -113,12 +113,56 @@ class OrderStub(object):
                 request_serializer=stockbazaar__pb2.requestStockName.SerializeToString,
                 response_deserializer=stockbazaar__pb2.requestResult.FromString,
                 )
+        self.Lookup = channel.unary_unary(
+                '/Order/Lookup',
+                request_serializer=stockbazaar__pb2.lookupOrderNum.SerializeToString,
+                response_deserializer=stockbazaar__pb2.lookupOrderNumResult.FromString,
+                )
+        self.Propagate = channel.unary_unary(
+                '/Order/Propagate',
+                request_serializer=stockbazaar__pb2.propagateOrderNum.SerializeToString,
+                response_deserializer=stockbazaar__pb2.propagateResult.FromString,
+                )
+        self.AssignFollowers = channel.unary_unary(
+                '/Order/AssignFollowers',
+                request_serializer=stockbazaar__pb2.followersAssigned.SerializeToString,
+                response_deserializer=stockbazaar__pb2.followersResult.FromString,
+                )
+        self.Synchronize = channel.unary_stream(
+                '/Order/Synchronize',
+                request_serializer=stockbazaar__pb2.synchronizeTransNum.SerializeToString,
+                response_deserializer=stockbazaar__pb2.transNumInfo.FromString,
+                )
 
 
 class OrderServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def Request(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Lookup(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Propagate(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AssignFollowers(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Synchronize(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -131,6 +175,26 @@ def add_OrderServicer_to_server(servicer, server):
                     servicer.Request,
                     request_deserializer=stockbazaar__pb2.requestStockName.FromString,
                     response_serializer=stockbazaar__pb2.requestResult.SerializeToString,
+            ),
+            'Lookup': grpc.unary_unary_rpc_method_handler(
+                    servicer.Lookup,
+                    request_deserializer=stockbazaar__pb2.lookupOrderNum.FromString,
+                    response_serializer=stockbazaar__pb2.lookupOrderNumResult.SerializeToString,
+            ),
+            'Propagate': grpc.unary_unary_rpc_method_handler(
+                    servicer.Propagate,
+                    request_deserializer=stockbazaar__pb2.propagateOrderNum.FromString,
+                    response_serializer=stockbazaar__pb2.propagateResult.SerializeToString,
+            ),
+            'AssignFollowers': grpc.unary_unary_rpc_method_handler(
+                    servicer.AssignFollowers,
+                    request_deserializer=stockbazaar__pb2.followersAssigned.FromString,
+                    response_serializer=stockbazaar__pb2.followersResult.SerializeToString,
+            ),
+            'Synchronize': grpc.unary_stream_rpc_method_handler(
+                    servicer.Synchronize,
+                    request_deserializer=stockbazaar__pb2.synchronizeTransNum.FromString,
+                    response_serializer=stockbazaar__pb2.transNumInfo.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -156,5 +220,73 @@ class Order(object):
         return grpc.experimental.unary_unary(request, target, '/Order/Request',
             stockbazaar__pb2.requestStockName.SerializeToString,
             stockbazaar__pb2.requestResult.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Lookup(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Order/Lookup',
+            stockbazaar__pb2.lookupOrderNum.SerializeToString,
+            stockbazaar__pb2.lookupOrderNumResult.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Propagate(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Order/Propagate',
+            stockbazaar__pb2.propagateOrderNum.SerializeToString,
+            stockbazaar__pb2.propagateResult.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AssignFollowers(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Order/AssignFollowers',
+            stockbazaar__pb2.followersAssigned.SerializeToString,
+            stockbazaar__pb2.followersResult.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Synchronize(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/Order/Synchronize',
+            stockbazaar__pb2.synchronizeTransNum.SerializeToString,
+            stockbazaar__pb2.transNumInfo.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

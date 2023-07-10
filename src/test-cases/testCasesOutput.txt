@@ -1,10 +1,10 @@
 
-C:\Users\thewi\Desktop\CS677\lab2\src\test-cases>py testcases.py 10.0.0.246 56893
+C:\Users\thewi\Desktop\CS677\lab3\src\test-cases>py testcases.py 10.0.0.246 56893
 ########################################
 ##Test Case 1 - Lookup Functionality: ##
 ########################################
 Input Request: GET /stocks/nvidia
-JSON Reply: {'data': {'name': 'nvidia', 'price': 240.63, 'quantity': 880}}
+JSON Reply: {'data': {'name': 'nvidia', 'price': 240.63, 'quantity': 1000}}
 
 ###########################################################
 ##Test Case 2 - Lookup Error Handling (Stock not found): ##
@@ -16,25 +16,25 @@ JSON Reply: {'error': {'code': 404, 'message': 'stock not found'}}
 ##Test Case 3 - Sell Functionality: ##
 ######################################
 Input Request: POST /orders
-Input JSON: {"name": "intel", "type": "sell", "quantity": 10}
-Stock Information before Request: {'data': {'name': 'intel', 'price': 28.01, 'quantity': 1399}}
-JSON Reply: {'data': {'transaction_number': 278}}
-Stock Information after Request: {'data': {'name': 'intel', 'price': 28.01, 'quantity': 1409}}
+Input JSON: {"name": "meta", "type": "sell", "quantity": 10}
+Stock Information before Request: {'data': {'name': 'meta', 'price': 194.02, 'quantity': 1000}}
+JSON Reply: {'data': {'transaction_number': 0}}
+Stock Information after Request: {'data': {'name': 'meta', 'price': 194.02, 'quantity': 1010}}
 
 #####################################
 ##Test Case 4 - Buy Functionality: ##
 #####################################
 Input Request: POST /orders
-Input JSON: {"name": "apple", "type": "buy", "quantity": 10}
-Stock Information before Request: {'data': {'name': 'apple', 'price': 152.59, 'quantity': 959}}
-JSON Reply: {'data': {'transaction_number': 279}}
-Stock Information after Request: {'data': {'name': 'apple', 'price': 152.59, 'quantity': 949}}
+Input JSON: {"name": "gamestop", "type": "buy", "quantity": 10}
+Stock Information before Request: {'data': {'name': 'gamestop', 'price': 20.0, 'quantity': 1000}}
+JSON Reply: {'data': {'transaction_number': 1}}
+Stock Information after Request: {'data': {'name': 'gamestop', 'price': 20.0, 'quantity': 990}}
 
 #############################################################################
 ##Test Case 5 - Buy Error Handling (Amount to buy > num of stocks avail.): ##
 #############################################################################
 Input Request: POST /orders
-Input JSON: {"name": "ford", "type": "buy", "quantity": 10000000}
+Input JSON: {"name": "nvidia", "type": "buy", "quantity": 10000000}
 JSON Reply: {'error': {'code': 404, 'message': 'not enough stocks available to buy'}}
 
 ########################################################################
@@ -63,4 +63,186 @@ Input Request: POST /orders
 Input JSON: {"name": "imaginarycompany", "type": "buy", "quantity": 100}
 JSON Reply: {'error': {'code': 404, 'message': 'stock not found'}}
 
-C:\Users\thewi\Desktop\CS677\lab2\src\test-cases>
+##########################################
+##Test Case 9 - Caching Functionality:  ##
+##########################################
+Request 1a (s.t. it is stored in local cache): GET /stocks/amazon
+Request 1b (s.t. we can retrieve from cache): GET /stocks/amazon
+Latency with caching: 0.00027210000553168356
+Request 2a (trade stock so cache is invalidated): POST /orders
+Request 2b (lookup stock without cache): GET /stocks/amazon
+Latency without caching: 0.0015700000076321885
+Difference in time: 0.001297900002100505
+Percent speed up: 82.6687895408323
+
+##############################################
+##Test Case 10 - Order Query Functionality: ##
+##############################################
+Input Request: POST /orders
+Input JSON: {"name": "tesla", "type": "sell", "quantity": 10}
+Client Locally Stored Information: {3: {'number': 3, 'name': 'tesla', 'type': 'sell', 'quantity': 10}}
+Input Request: GET /orders/3
+Output of Order Query: {'data': {'number': 3, 'name': 'tesla', 'type': 'sell', 'quantity': 10}}
+
+###############################################
+##Test Case 11 - Order Query Error Handling: ##
+###############################################
+Input Request: POST /orders
+Input JSON: {"name": "amc", "type": "sell", "quantity": 10}
+Client Locally Stored Information: {4: {'number': 4, 'name': 'amc', 'type': 'sell', 'quantity': 10}}
+Input Request: GET /orders/5
+Output of Order Query: {'error': {'code': 404, 'message': 'transaction not found'}}
+
+##############################################
+##Test Case 12 - Propagation Functionality: ##
+##############################################
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "gamestop", "type": "sell", "quantity": 31}
+JSON Reply: {'data': {'transaction_number': 0}}
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "gamestop", "type": "sell", "quantity": 14}
+JSON Reply: {'data': {'transaction_number': 1}}
+--- Content of Replica 1 at C:\Users\thewi\Desktop\CS677\lab3\src\order1.txt: ---
+['{"0": {"name": "gamestop", "type": "sell", "quantity": 31}, "1": {"name": "gamestop", "type": "sell", "quantity": 14}}']
+--- Content of Replica 2 at C:\Users\thewi\Desktop\CS677\lab3\src\order2.txt: ---
+['{"0": {"name": "gamestop", "type": "sell", "quantity": 31}, "1": {"name": "gamestop", "type": "sell", "quantity": 14}}']
+--- Content of Replica 3 at C:\Users\thewi\Desktop\CS677\lab3\src\order3.txt: ---
+['{"0": {"name": "gamestop", "type": "sell", "quantity": 31}, "1": {"name": "gamestop", "type": "sell", "quantity": 14}}']
+ALL THREE FILES ARE THE SAME: True
+
+#######################################################
+##Test Case 13 - Largest Replica ID Dead on Arrival: ##
+#######################################################
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "tesla", "type": "sell", "quantity": 15}
+JSON Reply: {'data': {'transaction_number': 0}}
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "tesla", "type": "sell", "quantity": 19}
+JSON Reply: {'data': {'transaction_number': 1}}
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "tesla", "type": "buy", "quantity": 67}
+JSON Reply: {'data': {'transaction_number': 2}}
+--- Content of Replica 1 at C:\Users\thewi\Desktop\CS677\lab3\src\order1.txt: ---
+['{"0": {"name": "tesla", "type": "sell", "quantity": 15}, "1": {"name": "tesla", "type": "sell", "quantity": 19}, "2": {"name": "tesla", "type": "buy", "quantity": 67}}']
+--- Content of Replica 2 at C:\Users\thewi\Desktop\CS677\lab3\src\order2.txt: ---
+['{"0": {"name": "tesla", "type": "sell", "quantity": 15}, "1": {"name": "tesla", "type": "sell", "quantity": 19}, "2": {"name": "tesla", "type": "buy", "quantity": 67}}']
+--- Content of Replica 3 at C:\Users\thewi\Desktop\CS677\lab3\src\order3.txt: ---
+['{}']
+ALL THREE FILES ARE THE SAME: False
+REPLICAS 2 AND 1 ARE THE SAME: True
+
+####################################################
+##Test Case 14 - Leader Crashes During Execution: ##
+####################################################
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "meta", "type": "sell", "quantity": 69}
+JSON Reply: {'data': {'transaction_number': 0}}
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "meta", "type": "sell", "quantity": 71}
+JSON Reply: {'data': {'transaction_number': 1}}
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "meta", "type": "buy", "quantity": 30}
+JSON Reply: {'data': {'transaction_number': 2}}
+--- Content of Replica 1 at C:\Users\thewi\Desktop\CS677\lab3\src\order1.txt: ---
+['{"0": {"name": "meta", "type": "sell", "quantity": 69}, "1": {"name": "meta", "type": "sell", "quantity": 71}, "2": {"name": "meta", "type": "buy", "quantity": 30}}']
+--- Content of Replica 2 at C:\Users\thewi\Desktop\CS677\lab3\src\order2.txt: ---
+['{"0": {"name": "meta", "type": "sell", "quantity": 69}, "1": {"name": "meta", "type": "sell", "quantity": 71}, "2": {"name": "meta", "type": "buy", "quantity": 30}}']
+--- Content of Replica 3 at C:\Users\thewi\Desktop\CS677\lab3\src\order3.txt: ---
+['{"0": {"name": "meta", "type": "sell", "quantity": 69}}']
+ALL THREE FILES ARE THE SAME: False
+REPLICAS 2 AND 1 ARE THE SAME: True
+
+######################################################
+##Test Case 15 - Follower Crashes During Execution: ##
+######################################################
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "amc", "type": "sell", "quantity": 47}
+JSON Reply: {'data': {'transaction_number': 0}}
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "amc", "type": "buy", "quantity": 83}
+JSON Reply: {'data': {'transaction_number': 1}}
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "amc", "type": "buy", "quantity": 45}
+JSON Reply: {'data': {'transaction_number': 2}}
+--- Content of Replica 1 at C:\Users\thewi\Desktop\CS677\lab3\src\order1.txt: ---
+['{"0": {"name": "amc", "type": "sell", "quantity": 47}, "1": {"name": "amc", "type": "buy", "quantity": 83}, "2": {"name": "amc", "type": "buy", "quantity": 45}}']
+--- Content of Replica 2 at C:\Users\thewi\Desktop\CS677\lab3\src\order2.txt: ---
+['{"0": {"name": "amc", "type": "sell", "quantity": 47}, "1": {"name": "amc", "type": "buy", "quantity": 83}}']
+--- Content of Replica 3 at C:\Users\thewi\Desktop\CS677\lab3\src\order3.txt: ---
+['{"0": {"name": "amc", "type": "sell", "quantity": 47}, "1": {"name": "amc", "type": "buy", "quantity": 83}, "2": {"name": "amc", "type": "buy", "quantity": 45}}']
+ALL THREE FILES ARE THE SAME: False
+REPLICAS 3 AND 1 ARE THE SAME: True
+
+################################################################
+##Test Case 16 - Leader Crashes and Rejoins During Execution: ##
+################################################################
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "amc", "type": "sell", "quantity": 7}
+JSON Reply: {'data': {'transaction_number': 0}}
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "amc", "type": "buy", "quantity": 40}
+--- Content of Replica 3 at Time of Crash: ---
+['{"0": {"name": "amc", "type": "sell", "quantity": 7}}']
+JSON Reply: {'data': {'transaction_number': 1}}
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "amc", "type": "sell", "quantity": 75}
+JSON Reply: {'data': {'transaction_number': 2}}
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "amc", "type": "sell", "quantity": 70}
+JSON Reply: {'data': {'transaction_number': 3}}
+--- Content of Replica 1 at C:\Users\thewi\Desktop\CS677\lab3\src\order1.txt: ---
+['{"0": {"name": "amc", "type": "sell", "quantity": 7}, "1": {"name": "amc", "type": "buy", "quantity": 40}, "2": {"name": "amc", "type": "sell", "quantity": 75}, "3": {"name": "amc", "type": "sell", "quantity": 70}}']
+--- Content of Replica 2 at C:\Users\thewi\Desktop\CS677\lab3\src\order2.txt: ---
+['{"0": {"name": "amc", "type": "sell", "quantity": 7}, "1": {"name": "amc", "type": "buy", "quantity": 40}, "2": {"name": "amc", "type": "sell", "quantity": 75}, "3": {"name": "amc", "type": "sell", "quantity": 70}}']
+--- Content of Replica 3 at C:\Users\thewi\Desktop\CS677\lab3\src\order3.txt: ---
+['{"0": {"name": "amc", "type": "sell", "quantity": 7}, "1": {"name": "amc", "type": "buy", "quantity": 40}, "2": {"name": "amc", "type": "sell", "quantity": 75}, "3": {"name": "amc", "type": "sell", "quantity": 70}}']
+ALL THREE FILES ARE THE SAME: True
+REPLICAS 3 AND 1 ARE THE SAME: True
+
+##################################################################
+##Test Case 17 - Follower Crashes and Rejoins During Execution: ##
+##################################################################
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "nvidia", "type": "buy", "quantity": 44}
+JSON Reply: {'data': {'transaction_number': 0}}
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "nvidia", "type": "sell", "quantity": 6}
+--- Content of Replica 2 at Time of Crash: ---
+['{"0": {"name": "nvidia", "type": "buy", "quantity": 44}, "1": {"name": "nvidia", "type": "sell", "quantity": 6}}']
+JSON Reply: {'data': {'transaction_number': 1}}
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "nvidia", "type": "buy", "quantity": 94}
+JSON Reply: {'data': {'transaction_number': 2}}
+-------- Input --------
+Input Request: POST /orders
+Input JSON: {"name": "nvidia", "type": "buy", "quantity": 51}
+JSON Reply: {'data': {'transaction_number': 3}}
+--- Content of Replica 1 at C:\Users\thewi\Desktop\CS677\lab3\src\order1.txt: ---
+['{"0": {"name": "nvidia", "type": "buy", "quantity": 44}, "1": {"name": "nvidia", "type": "sell", "quantity": 6}, "2": {"name": "nvidia", "type": "buy", "quantity": 94}, "3": {"name": "nvidia", "type": "buy", "quantity": 51}}']
+--- Content of Replica 2 at C:\Users\thewi\Desktop\CS677\lab3\src\order2.txt: ---
+['{"0": {"name": "nvidia", "type": "buy", "quantity": 44}, "1": {"name": "nvidia", "type": "sell", "quantity": 6}, "2": {"name": "nvidia", "type": "buy", "quantity": 94}, "3": {"name": "nvidia", "type": "buy", "quantity": 51}}']
+--- Content of Replica 3 at C:\Users\thewi\Desktop\CS677\lab3\src\order3.txt: ---
+['{"0": {"name": "nvidia", "type": "buy", "quantity": 44}, "1": {"name": "nvidia", "type": "sell", "quantity": 6}, "2": {"name": "nvidia", "type": "buy", "quantity": 94}, "3": {"name": "nvidia", "type": "buy", "quantity": 51}}']
+ALL THREE FILES ARE THE SAME: True
+REPLICAS 3 AND 1 ARE THE SAME: True
+
+
+C:\Users\thewi\Desktop\CS677\lab3\src\test-cases>

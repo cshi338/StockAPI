@@ -1,9 +1,6 @@
 from concurrent import futures
-from threading import Lock
 
 import logging
-import math
-import time
 import socket
 import json
 
@@ -19,13 +16,16 @@ if os.path.exists('./catalog.txt'):
 else:
     #Create initial on disk data file
     stockData = {}
-    tesla = {'price':183.26,'volume':0,'quantity':1000}
-    ford = {'price':11.93,'volume':0,'quantity':1000}
-    apple = {'price':152.59,'volume':0,'quantity':1000}
-    amazon = {'price':94.88,'volume':0,'quantity':1000}
-    nvidia = {'price':240.63,'volume':0,'quantity':1000}
-    intel = {'price':28.01,'volume':0,'quantity':1000}
-    meta = {'price':194.02,'volume':0,'quantity':1000}
+    tesla = {'price':183.26,'volume':100,'quantity':1000}
+    ford = {'price':11.93,'volume':100,'quantity':1000}
+    apple = {'price':152.59,'volume':100,'quantity':1000}
+    amazon = {'price':94.88,'volume':100,'quantity':1000}
+    nvidia = {'price':240.63,'volume':100,'quantity':1000}
+    intel = {'price':28.01,'volume':100,'quantity':1000}
+    meta = {'price':194.02,'volume':100,'quantity':1000}
+    nike = {'price':126.13,'volume':100,'quantity':1000}
+    amc = {'price':4.78,'volume':100,'quantity':1000}
+    gamestop = {'price':20.00,'volume':100,'quantity':1000}
 
     stockData['apple']=apple
     stockData['tesla']=tesla
@@ -34,6 +34,10 @@ else:
     stockData['nvidia']=nvidia
     stockData['intel']=intel
     stockData['meta']=meta
+    stockData['nike']=nike
+    stockData['amc']=amc
+    stockData['gamestop']=gamestop
+
     with open('./catalog.txt', 'w') as file:
          file.write(json.dumps(stockData)) # use `json.loads` to do the reverse
 
@@ -73,10 +77,10 @@ class CatalogServicer(stockbazaar_pb2_grpc.CatalogServicer):
 
 def serve():
     #Implement server with 5 threads
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=5))
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     stockbazaar_pb2_grpc.add_CatalogServicer_to_server(
         CatalogServicer(), server)
-    print("Server started on: " + socket.gethostbyname(socket.gethostname())+':56892')
+    print("Catalog server started on: " + socket.gethostbyname(socket.gethostname())+':56892')
     server.add_insecure_port(socket.gethostbyname(socket.gethostname())+':56892')
     server.start()
     server.wait_for_termination()
