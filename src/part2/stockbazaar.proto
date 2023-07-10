@@ -1,0 +1,27 @@
+service StockBazaar{
+    rpc Lookup(lookupStockName) returns (lookupResult) {}
+    rpc Trade(tradeStockName) returns (tradeResult) {}
+    rpc Update(updateStockName) returns (updateResult) {}
+}
+message lookupStockName {
+    optional string stockName = 1;
+}
+message lookupResult {
+    optional float stockPrice = 1;
+    optional int32 tradingVolume = 2;
+}
+message tradeStockName {
+    optional string stockName = 1;
+    optional int32 stockQuantity = 2;
+    optional string tradeType = 3;
+}
+message tradeResult {
+    optional int32 resultTrade = 1;
+}
+message updateStockName {
+    optional string stockName = 1;
+    optional float stockPrice = 2;
+}
+message updateResult {
+    optional int32 resultUpdate = 1;
+}

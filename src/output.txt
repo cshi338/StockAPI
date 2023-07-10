@@ -1,0 +1,176 @@
+1000 requests, randomly choose b/c Lookup and Trade. 1,2,3,4,5 clients tested:
+Chriss-MacBook-Pro-2:grpc ChrisShi$ ./run.sh
+5 Clients
+Average Latency: 0.021772352933883667
+Average Latency: 0.021768578052520752
+Average Latency: 0.021832784175872803
+Average Latency: 0.021835062980651857
+Average Latency: 0.021848280906677245
+
+4 Clients
+Average Latency: 0.021244797945022584
+Average Latency: 0.021314121007919313
+Average Latency: 0.021315163135528566
+Average Latency: 0.021370147943496703
+
+3 Clients
+Average Latency: 0.019940851926803588
+Average Latency: 0.019995708227157592
+Average Latency: 0.020064426898956298
+
+2 Clients
+Average Latency: 0.019757074117660523
+Average Latency: 0.019826318979263305
+
+1 Clients
+Average Latency: 0.018131174087524415
+
+
+1000 requests, Lookup ONLY. 1,2,3,4,5 clients tested:
+Chriss-MacBook-Pro-2:grpc ChrisShi$ ./run.sh
+5 Clients
+Average Latency: 0.021429771900177003
+Average Latency: 0.02146983766555786
+Average Latency: 0.02150288987159729
+Average Latency: 0.021515798091888427
+Average Latency: 0.021528354167938232
+
+4 Clients
+Average Latency: 0.021717621088027952
+Average Latency: 0.02171994686126709
+Average Latency: 0.021729257345199586
+Average Latency: 0.021872428894042967
+
+3 Clients
+Average Latency: 0.01980922293663025
+Average Latency: 0.019805081844329834
+Average Latency: 0.019851078987121584
+
+2 Clients
+Average Latency: 0.019543154001235963
+Average Latency: 0.019561287879943847
+
+1 Clients
+Average Latency: 0.01791818904876709
+
+
+1000 requests, Trade ONLY. 1,2,3,4,5 clients tested:
+Chriss-MacBook-Pro-2:grpc ChrisShi$ ./run.sh
+5 Clients
+Average Latency: 0.023368274927139283
+Average Latency: 0.023417399644851684
+Average Latency: 0.023435479879379273
+Average Latency: 0.023517042875289915
+Average Latency: 0.023524046659469604
+
+4 Clients
+Average Latency: 0.020387680053710937
+Average Latency: 0.020486160039901734
+Average Latency: 0.020524583101272583
+Average Latency: 0.020505074977874755
+
+3 Clients
+Average Latency: 0.020894983768463136
+Average Latency: 0.020894516944885255
+Average Latency: 0.02092225480079651
+
+2 Clients
+Average Latency: 0.0192830069065094
+Average Latency: 0.019298137187957764
+
+1 Clients
+Average Latency: 0.017991516828536988
+
+
+1000 requests naive max thread pool implementation. 1,2,3,4,5 test clients tested.
+Chriss-MacBook-Pro-2:socket ChrisShi$ ./run.sh
+5 Clients
+Average Latency: 0.012771163702011108
+Average Latency: 0.012774412870407105
+Average Latency: 0.012785709857940674
+Average Latency: 0.012789972066879273
+Average Latency: 0.012818568229675293
+
+4 Clients
+Average Latency: 0.01254988694190979
+Average Latency: 0.012561802864074706
+Average Latency: 0.012562569141387939
+Average Latency: 0.012591468095779419
+
+3 Clients
+Average Latency: 0.012440057039260865
+Average Latency: 0.012453197240829468
+Average Latency: 0.012569619178771972
+
+2 Clients
+Average Latency: 0.012040464878082276
+Average Latency: 0.012057062864303589
+
+1 Clients
+Average Latency: 0.012381258964538575
+
+1000 requests naive max thread pool implementation. 1,2,3,4,5,6,7,8,9 test clients tested. Maxpool size of 5
+Chriss-MacBook-Pro-2:part1 ChrisShi$ ./run.sh
+5 Clients
+Average Latency: 0.010724672317504883
+Average Latency: 0.010721571922302246
+Average Latency: 0.01072832727432251
+Average Latency: 0.010717978477478027
+Average Latency: 0.010718322277069092
+
+4 Clients
+Average Latency: 0.010252741813659668
+Average Latency: 0.010261760234832764
+Average Latency: 0.010265474319458007
+Average Latency: 0.01027018165588379
+
+3 Clients
+Average Latency: 0.009725304126739501
+Average Latency: 0.009728479385375976
+Average Latency: 0.009737892150878906
+
+2 Clients
+Average Latency: 0.009623713970184326
+Average Latency: 0.00965130615234375
+
+1 Clients
+Average Latency: 0.010116312026977539
+
+6 Clients
+Average Latency: 0.010234186172485352
+Average Latency: 0.010248372077941895
+Average Latency: 0.010245125770568847
+Average Latency: 0.010252938270568848
+Average Latency: 0.010256115913391112
+Average Latency: 0.010264577865600586
+
+7 Clients
+Average Latency: 0.01019634771347046
+Average Latency: 0.010163149833679198
+Average Latency: 0.010208431720733643
+Average Latency: 0.010190032005310058
+Average Latency: 0.010184214115142823
+Average Latency: 0.01016023015975952
+Average Latency: 0.010161036014556885
+
+8 Clients
+Average Latency: 0.010356833934783935
+Average Latency: 0.010359385967254638
+Average Latency: 0.010358750343322754
+Average Latency: 0.01035447359085083
+Average Latency: 0.0103262300491333
+Average Latency: 0.010326807975769042
+Average Latency: 0.010367112159729004
+Average Latency: 0.010349952220916748
+
+9 Clients
+Average Latency: 0.010319565773010254
+Average Latency: 0.01029851198196411
+Average Latency: 0.010300946235656739
+Average Latency: 0.010297791957855225
+Average Latency: 0.010284465789794922
+Average Latency: 0.010302209854125976
+Average Latency: 0.010307656288146973
+Average Latency: 0.010318183898925781
+Average Latency: 0.010308311939239503
+
