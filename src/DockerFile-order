@@ -1,0 +1,9 @@
+FROM python:3.8-alpine
+
+RUN pip install flask redis grpcio grpcio-tools
+
+WORKDIR /app/order-service
+
+COPY ./order-service /app/order-service
+
+ENTRYPOINT ["python", "-u", "orderServer.py"]

@@ -1,7 +1,18 @@
+To run stock services on NATIVE host:
+1) Ensure that port 56893 is listening to outside requests.
+2) Run the order service as follows: python3 orderServer.py
+3) Run the catalog service as follows: python3 catalogServer.py
+4) Run the front end service as follows: python3 frontEnd.py
+5) Connect to the front end service with any number of clients as follows: python3 HTTPClient.py IP_ADDRESS 56893 PROBABILITY VERBOSE
+where: IP_ADDRESS is the public ip address of the front end service. PROBABILITY is the probability p at which the client will send another order request using the same connection. VERBOSE is a value of 0 or 1 where 0 is a verbose output and 1 is a non-verbose/latency only output.
+All three services will share the same local ip. Order service will be hosted on port 56891. Catalog service will be hosted on port 56892. Front end service will be hosted on port 56893.
 
- Add your source code to this directory. Part 1 should go to a directory called *part1* and Part 2 should go to a directory called *part2*
- 
- At the time of writing this, the IP address assigned to my edLab machine is 128.119.243.168. Therefore 128.119.243.168 is utilized as the host for all files in the lab. I have confirmed that hosting the server on the edlab machine, I am able to connect from my local machine to the server. I have also confirmed that hosting the server on the edlab machine, I am able to connect from another edlab machine. I am not sure if the IP is going to change when grading. 
- 
- UPDATE:
-For both parts, when running the code, execute the server.py files first. The server.py file will output a string. For part 1, replace the "host" value with this string. For part 2, replace the string in grpc.insecure_channel() on line 18 in client.py and line 15 in updateClient.py with the displayed string. 
+To run stock services on docker containers:
+1) Ensure that port 56893 is listening to outside requests.
+2) Execute: sudo bash build.sh
+3) Execute: docker-compose up
+4) Connect to the front end service with any number of clients as follows: python3 HTTPClient.py IP_ADDRESS 56893 PROBABILITY VERBOSE
+where: IP_ADDRESS is the public ip address of the front end service. PROBABILITY is the probability p at which the client will send another order request using the same connection. VERBOSE is a value of 0 or 1 where 0 is a verbose output and 1 is a non-verbose/latency only output.
+5) Close the docker containers with: docker-compose down
+
+Order service will be hosted on 10.0.0.241:56891. Catalog service will be hosted on 10.0.0.242:56892. Front end service will be hosted on 10.0.0.243:56983. A network is created with subnet of 10.0.0.0/24 s.t. any incoming connection with 10.0.0.xxx:56893 is accepted.

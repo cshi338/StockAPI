@@ -1,0 +1,66 @@
+
+C:\Users\thewi\Desktop\CS677\lab2\src\test-cases>py testcases.py 10.0.0.246 56893
+########################################
+##Test Case 1 - Lookup Functionality: ##
+########################################
+Input Request: GET /stocks/nvidia
+JSON Reply: {'data': {'name': 'nvidia', 'price': 240.63, 'quantity': 880}}
+
+###########################################################
+##Test Case 2 - Lookup Error Handling (Stock not found): ##
+###########################################################
+Input Request: GET /stocks/imaginarycompany
+JSON Reply: {'error': {'code': 404, 'message': 'stock not found'}}
+
+######################################
+##Test Case 3 - Sell Functionality: ##
+######################################
+Input Request: POST /orders
+Input JSON: {"name": "intel", "type": "sell", "quantity": 10}
+Stock Information before Request: {'data': {'name': 'intel', 'price': 28.01, 'quantity': 1399}}
+JSON Reply: {'data': {'transaction_number': 278}}
+Stock Information after Request: {'data': {'name': 'intel', 'price': 28.01, 'quantity': 1409}}
+
+#####################################
+##Test Case 4 - Buy Functionality: ##
+#####################################
+Input Request: POST /orders
+Input JSON: {"name": "apple", "type": "buy", "quantity": 10}
+Stock Information before Request: {'data': {'name': 'apple', 'price': 152.59, 'quantity': 959}}
+JSON Reply: {'data': {'transaction_number': 279}}
+Stock Information after Request: {'data': {'name': 'apple', 'price': 152.59, 'quantity': 949}}
+
+#############################################################################
+##Test Case 5 - Buy Error Handling (Amount to buy > num of stocks avail.): ##
+#############################################################################
+Input Request: POST /orders
+Input JSON: {"name": "ford", "type": "buy", "quantity": 10000000}
+JSON Reply: {'error': {'code': 404, 'message': 'not enough stocks available to buy'}}
+
+########################################################################
+##Test Case 6 - Buy/Sell Error Handling (Invalid quantity of stocks): ##
+########################################################################
+Note: PROTO already defines quantity needs to be an int. As such, the only invalid value will be negative values.
+Input Request: POST /orders
+Input JSON: {"name": "amazon", "type": "buy", "quantity": -1000}
+JSON Reply: {'error': {'code': 404, 'message': 'invalid number of stocks'}}
+
+Input Request: POST /orders
+Input JSON: {"name": "amazon", "type": "sell", "quantity": -1000}
+JSON Reply: {'error': {'code': 404, 'message': 'invalid number of stocks'}}
+
+##################################################################
+##Test Case 7 - Buy/Sell Error Handling (Invalid request type): ##
+##################################################################
+Input Request: POST /orders
+Input JSON: {"name": "meta", "type": "trade", "quantity": 100}
+JSON Reply: {'error': {'code': 400, 'message': 'invalid request type'}}
+
+#############################################################
+##Test Case 8 - Buy/Sell Error Handling (Stock not found): ##
+#############################################################
+Input Request: POST /orders
+Input JSON: {"name": "imaginarycompany", "type": "buy", "quantity": 100}
+JSON Reply: {'error': {'code': 404, 'message': 'stock not found'}}
+
+C:\Users\thewi\Desktop\CS677\lab2\src\test-cases>

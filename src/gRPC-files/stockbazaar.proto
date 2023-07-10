@@ -1,0 +1,31 @@
+service Catalog{
+    rpc Lookup(lookupStockName) returns (lookupResult) {}
+    rpc Trade(tradeStockName) returns (tradeResult) {}
+}
+message lookupStockName {
+    optional string stockName = 1;
+}
+message lookupResult {
+    optional float stockPrice = 1;
+    optional int32 stockQuantity = 2;
+}
+message tradeStockName {
+    optional string stockName = 1;
+    optional int32 stockTradeQuantity = 2;
+    optional string tradeType = 3;
+}
+message tradeResult {
+    optional int32 resultTrade = 1;
+}
+
+service Order{
+    rpc Request(requestStockName) returns (requestResult) {}
+}
+message requestStockName {
+    optional string stockName = 1;
+    optional int32 stockTradeQuantity = 2;
+    optional string tradeType = 3;
+}
+message requestResult {
+    optional int32 transactionNum = 1;
+}

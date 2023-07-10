@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+  order:
+    build: 
+        context: .
+        dockerfile: ./DockerFile-order
+    ports:
+      - "56891:56891"
+    volumes:
+      - ./order-service:/app/order-service
+    environment:
+      - CATALOG_HOST=10.0.0.242
+    networks:
+      vpcbr:
+        ipv4_address: 10.0.0.241
+  catalog:
+    build:
+        context: .
+        dockerfile: ./DockerFile-catalog
+    ports:
+      - "56892:56892"
+    volumes:
+      - ./catalog-service:/app/catalog-service
+    networks:
+      vpcbr:
+        ipv4_address: 10.0.0.242
+
+  frontend:
+    build:
+        context: .
+        dockerfile: ./DockerFile-frontend
+    ports:
+      - "56893:56893"
+    environment:
+      - CATALOG_HOST=10.0.0.242
+      - ORDER_HOST=10.0.0.241
+    networks:
+      vpcbr:
+        ipv4_address: 10.0.0.243
+networks:
+   vpcbr:
+     driver: bridge
+     ipam:
+      config:
+        - subnet: 10.0.0.0/24

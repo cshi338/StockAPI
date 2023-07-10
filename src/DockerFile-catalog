@@ -1,0 +1,9 @@
+FROM python:3.8-alpine
+
+RUN pip install flask redis grpcio grpcio-tools
+
+WORKDIR /app/catalog-service
+
+COPY ./catalog-service /app/catalog-service
+
+ENTRYPOINT ["python", "-u", "catalogServer.py"]
